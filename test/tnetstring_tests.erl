@@ -13,3 +13,7 @@ encode_false_test() ->
     Payload = tnetstring:encode(false),
     ?assertEqual(<<"5:false!">>, Payload).
 
+encode_int_test() ->
+    Payload = tnetstring:encode(123),
+    ?assertEqual(<<"3:123#">>, Payload).
+
