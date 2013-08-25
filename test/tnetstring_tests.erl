@@ -46,3 +46,8 @@ decode_true_test() ->
     ?assertEqual(true, Term),
     ?assertEqual(<<>>, Remain).
 
+decode_false_test() ->
+    {Term, Remain} = tnetstring:decode(<<"5:false!">>),
+    ?assertEqual(false, Term),
+    ?assertEqual(<<>>, Remain).
+
