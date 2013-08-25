@@ -79,3 +79,21 @@ decode_object_test() ->
                   {<<"d">>, false}], Term),
     ?assertEqual(<<>>, Remain).
 
+remain_test() ->
+    {Term, Remain} = tnetstring:decode(<<"12:1:1#1:2#1:3#]1:4#">>),
+    ?assertEqual([1, 2, 3], Term),
+    ?assertEqual(<<"1:4#">>, Remain),
+    {Term2, Remain2} = tnetstring:decode(Remain),
+    ?assertEqual(4, Term2),
+    ?assertEqual(<<>>, Remain2).
+
+empty_list_test() ->
+    {Term, Remain} = tnetstring:decode(<<"0:]">>),
+    ?assertEqual([], Term),
+    ?assertEqual(<<>>, Remain).
+
+empty_objects_test() ->
+    {Term, Remain} = tnetstring:decode(<<"0:}">>),
+    ?assertEqual([{}], Term),
+    ?assertEqual(<<>>, Remain).
+
