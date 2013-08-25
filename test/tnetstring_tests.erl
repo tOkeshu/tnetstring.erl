@@ -61,3 +61,8 @@ decode_float_test() ->
     ?assertEqual(3.141592653589793, Term),
     ?assertEqual(<<>>, Remain).
 
+decode_string_test() ->
+    {Term, Remain} = tnetstring:decode(<<"18:Back to the Future,">>),
+    ?assertEqual(<<"Back to the Future">>, Term),
+    ?assertEqual(<<>>, Remain).
+

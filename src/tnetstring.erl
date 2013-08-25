@@ -53,7 +53,9 @@ decode(TNetString) ->
 decode(<<"#">>, Payload) ->
     list_to_integer(binary_to_list(Payload));
 decode(<<"^">>, Payload) ->
-    list_to_float(binary_to_list(Payload)).
+    list_to_float(binary_to_list(Payload));
+decode(<<",">>, Payload) ->
+    Payload.
 
 unpact_size(TNetString) ->
     unpact_size(TNetString, []).
