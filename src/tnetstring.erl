@@ -5,5 +5,7 @@
 encode(null) ->
     <<"0:~">>;
 encode(true) ->
-    <<"4:true!">>.
+    <<"4:true!">>;
+encode(false) ->
+    <<"5:false!">>.
 
