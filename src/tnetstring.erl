@@ -19,6 +19,10 @@ encode(Number) when is_float(Number) ->
 encode(ByteString) when is_binary(ByteString) ->
     Size = list_to_binary(integer_to_list(size(ByteString))),
     <<Size/binary, <<":">>/binary, ByteString/binary, <<",">>/binary>>;
+encode(Object) when is_tuple(hd(Object)) ->
+    Payload = << <<Bin/binary>> || Bin <- encode_o(Object, []) >>,
+    Size = list_to_binary(integer_to_list(size(Payload))),
+    <<Size/binary, <<":">>/binary, Payload/binary, <<"}">>/binary>>;
 encode(List) when is_list(List) ->
     Payload = << <<Bin/binary>> || Bin <- encode_l(List, []) >>,
     Size = list_to_binary(integer_to_list(size(Payload))),
@@ -28,4 +32,9 @@ encode_l([], Acc) ->
     lists:reverse(Acc);
 encode_l([Head|Tail], Acc) ->
     encode_l(Tail, [encode(Head)|Acc]).
+
+encode_o([], Acc) ->
+    lists:reverse(Acc);
+encode_o([{Key, Value}|Tail], Acc) ->
+    encode_o(Tail, [encode(Value), encode(Key)|Acc]).
 

@@ -29,3 +29,10 @@ encode_list_test() ->
     Payload = tnetstring:encode([<<"hello">>, 12345, 3.14, false]),
     ?assertEqual(<<"31:5:hello,5:12345#4:3.14^5:false!]">>, Payload).
 
+encode_objects_test() ->
+    Payload = tnetstring:encode([{<<"a">>, <<"hello">>},
+                                 {<<"b">>, 12345},
+                                 {<<"c">>, 3.14},
+                                 {<<"d">>, false}]),
+    ?assertEqual(<<"47:1:a,5:hello,1:b,5:12345#1:c,4:3.14^1:d,5:false!}">>, Payload).
+
