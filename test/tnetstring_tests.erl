@@ -21,3 +21,7 @@ encode_float_test() ->
     Payload = tnetstring:encode(3.141592653589793),
     ?assertEqual(<<"17:3.141592653589793^">>, Payload).
 
+encode_binary_test() ->
+    Payload = tnetstring:encode(<<"Back to the Future">>),
+    ?assertEqual(<<"18:Back to the Future,">>, Payload).
+
