@@ -36,6 +36,10 @@ encode_objects_test() ->
                                  {<<"d">>, false}]),
     ?assertEqual(<<"47:1:a,5:hello,1:b,5:12345#1:c,4:3.14^1:d,5:false!}">>, Payload).
 
+encode_empty_object_test() ->
+    Payload = tnetstring:encode([{}]),
+    ?assertEqual(<<"0:}">>, Payload).
+
 decode_null_test() ->
     {Term, Remain} = tnetstring:decode(<<"0:~">>),
     ?assertEqual(null, Term),
@@ -79,6 +83,16 @@ decode_object_test() ->
                   {<<"d">>, false}], Term),
     ?assertEqual(<<>>, Remain).
 
+decode_empty_list_test() ->
+    {Term, Remain} = tnetstring:decode(<<"0:]">>),
+    ?assertEqual([], Term),
+    ?assertEqual(<<>>, Remain).
+
+decode_empty_object_test() ->
+    {Term, Remain} = tnetstring:decode(<<"0:}">>),
+    ?assertEqual([{}], Term),
+    ?assertEqual(<<>>, Remain).
+
 remain_test() ->
     {Term, Remain} = tnetstring:decode(<<"12:1:1#1:2#1:3#]1:4#">>),
     ?assertEqual([1, 2, 3], Term),
@@ -86,14 +100,4 @@ remain_test() ->
     {Term2, Remain2} = tnetstring:decode(Remain),
     ?assertEqual(4, Term2),
     ?assertEqual(<<>>, Remain2).
-
-empty_list_test() ->
-    {Term, Remain} = tnetstring:decode(<<"0:]">>),
-    ?assertEqual([], Term),
-    ?assertEqual(<<>>, Remain).
-
-empty_objects_test() ->
-    {Term, Remain} = tnetstring:decode(<<"0:}">>),
-    ?assertEqual([{}], Term),
-    ?assertEqual(<<>>, Remain).
 

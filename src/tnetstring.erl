@@ -35,6 +35,8 @@ encode_l([Head|Tail], Acc) ->
 
 encode_o([], Acc) ->
     lists:reverse(Acc);
+encode_o([{}], _Acc) ->
+    [<<>>];
 encode_o([{Key, Value}|Tail], Acc) ->
     encode_o(Tail, [encode(Value), encode(Key)|Acc]).
 
