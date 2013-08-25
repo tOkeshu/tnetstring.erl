@@ -39,5 +39,7 @@ encode_o([{Key, Value}|Tail], Acc) ->
     encode_o(Tail, [encode(Value), encode(Key)|Acc]).
 
 decode(<<Null:3/binary, Remain/binary>>) when Null =:= <<"0:~">> ->
-    {null, Remain}.
+    {null, Remain};
+decode(<<True:7/binary, Remain/binary>>) when True =:= <<"4:true!">> ->
+    {true, Remain}.
 
