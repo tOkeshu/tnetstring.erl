@@ -1,6 +1,6 @@
 -module(tnetstring).
 
--export([encode/1]).
+-export([encode/1, decode/1]).
 
 encode(null) ->
     <<"0:~">>;
@@ -37,4 +37,7 @@ encode_o([], Acc) ->
     lists:reverse(Acc);
 encode_o([{Key, Value}|Tail], Acc) ->
     encode_o(Tail, [encode(Value), encode(Key)|Acc]).
+
+decode(<<Null:3/binary, Remain/binary>>) when Null =:= <<"0:~">> ->
+    {null, Remain}.
 
