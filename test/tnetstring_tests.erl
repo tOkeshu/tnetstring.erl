@@ -25,3 +25,7 @@ encode_binary_test() ->
     Payload = tnetstring:encode(<<"Back to the Future">>),
     ?assertEqual(<<"18:Back to the Future,">>, Payload).
 
+encode_list_test() ->
+    Payload = tnetstring:encode([<<"hello">>, 12345, 3.14, false]),
+    ?assertEqual(<<"31:5:hello,5:12345#4:3.14^5:false!]">>, Payload).
+

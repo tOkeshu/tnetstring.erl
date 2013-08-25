@@ -18,5 +18,14 @@ encode(Number) when is_float(Number) ->
     <<Size/binary, <<":">>/binary, Payload/binary, <<"^">>/binary>>;
 encode(ByteString) when is_binary(ByteString) ->
     Size = list_to_binary(integer_to_list(size(ByteString))),
-    <<Size/binary, <<":">>/binary, ByteString/binary, <<",">>/binary>>.
+    <<Size/binary, <<":">>/binary, ByteString/binary, <<",">>/binary>>;
+encode(List) when is_list(List) ->
+    Payload = << <<Bin/binary>> || Bin <- encode_l(List, []) >>,
+    Size = list_to_binary(integer_to_list(size(Payload))),
+    <<Size/binary, <<":">>/binary, Payload/binary, <<"]">>/binary>>.
+
+encode_l([], Acc) ->
+    lists:reverse(Acc);
+encode_l([Head|Tail], Acc) ->
+    encode_l(Tail, [encode(Head)|Acc]).
 
