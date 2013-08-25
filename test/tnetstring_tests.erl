@@ -66,3 +66,8 @@ decode_string_test() ->
     ?assertEqual(<<"Back to the Future">>, Term),
     ?assertEqual(<<>>, Remain).
 
+decode_list_test() ->
+    {Term, Remain} = tnetstring:decode(<<"31:5:hello,5:12345#4:3.14^5:false!]">>),
+    ?assertEqual([<<"hello">>, 12345, 3.14, false], Term),
+    ?assertEqual(<<>>, Remain).
+

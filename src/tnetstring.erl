@@ -55,7 +55,16 @@ decode(<<"#">>, Payload) ->
 decode(<<"^">>, Payload) ->
     list_to_float(binary_to_list(Payload));
 decode(<<",">>, Payload) ->
-    Payload.
+    Payload;
+decode(<<"]">>, Payload) ->
+    decode_l(Payload, []).
+
+decode_l(<<>>, Acc) ->
+    lists:reverse(Acc);
+decode_l(Payload, Acc) ->
+    {Term, Remain} = decode(Payload),
+    decode_l(Remain, [Term|Acc]).
+
 
 unpact_size(TNetString) ->
     unpact_size(TNetString, []).
