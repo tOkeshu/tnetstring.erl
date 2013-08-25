@@ -57,7 +57,11 @@ decode(<<"^">>, Payload) ->
 decode(<<",">>, Payload) ->
     Payload;
 decode(<<"]">>, Payload) ->
-    decode_l(Payload, []).
+    decode_l(Payload, []);
+decode(<<"}">>, Payload) ->
+    if Payload =:= <<>> -> [{}];
+       true -> decode_o(Payload, [])
+    end.
 
 decode_l(<<>>, Acc) ->
     lists:reverse(Acc);
@@ -65,6 +69,12 @@ decode_l(Payload, Acc) ->
     {Term, Remain} = decode(Payload),
     decode_l(Remain, [Term|Acc]).
 
+decode_o(<<>>, Acc) ->
+    lists:reverse(Acc);
+decode_o(Payload, Acc) ->
+    {Key, Remain} = decode(Payload),
+    {Value, Remain2} = decode(Remain),
+    decode_o(Remain2, [{Key, Value}|Acc]).
 
 unpact_size(TNetString) ->
     unpact_size(TNetString, []).

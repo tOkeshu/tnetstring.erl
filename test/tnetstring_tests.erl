@@ -71,3 +71,11 @@ decode_list_test() ->
     ?assertEqual([<<"hello">>, 12345, 3.14, false], Term),
     ?assertEqual(<<>>, Remain).
 
+decode_object_test() ->
+    {Term, Remain} = tnetstring:decode(<<"47:1:a,5:hello,1:b,5:12345#1:c,4:3.14^1:d,5:false!}">>),
+    ?assertEqual([{<<"a">>, <<"hello">>},
+                  {<<"b">>, 12345},
+                  {<<"c">>, 3.14},
+                  {<<"d">>, false}], Term),
+    ?assertEqual(<<>>, Remain).
+
