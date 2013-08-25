@@ -11,5 +11,9 @@ encode(false) ->
 encode(Number) when is_integer(Number) ->
     Payload = list_to_binary(integer_to_list(Number)),
     Size = list_to_binary(integer_to_list(size(Payload))),
-    <<Size/binary, <<":">>/binary, Payload/binary, <<"#">>/binary>>.
+    <<Size/binary, <<":">>/binary, Payload/binary, <<"#">>/binary>>;
+encode(Number) when is_float(Number) ->
+    Payload = list_to_binary(io_lib:format("~p", [Number])),
+    Size = list_to_binary(integer_to_list(size(Payload))),
+    <<Size/binary, <<":">>/binary, Payload/binary, <<"^">>/binary>>.
 

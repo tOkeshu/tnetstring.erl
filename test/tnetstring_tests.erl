@@ -17,3 +17,7 @@ encode_int_test() ->
     Payload = tnetstring:encode(123),
     ?assertEqual(<<"3:123#">>, Payload).
 
+encode_float_test() ->
+    Payload = tnetstring:encode(3.141592653589793),
+    ?assertEqual(<<"17:3.141592653589793^">>, Payload).
+
