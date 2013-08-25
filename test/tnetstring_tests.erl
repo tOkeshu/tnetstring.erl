@@ -56,3 +56,8 @@ decode_int_test() ->
     ?assertEqual(12345678901, Term),
     ?assertEqual(<<>>, Remain).
 
+decode_float_test() ->
+    {Term, Remain} = tnetstring:decode(<<"17:3.141592653589793^">>),
+    ?assertEqual(3.141592653589793, Term),
+    ?assertEqual(<<>>, Remain).
+
