@@ -43,5 +43,30 @@ decode(<<Null:3/binary, Remain/binary>>) when Null =:= <<"0:~">> ->
 decode(<<True:7/binary, Remain/binary>>) when True =:= <<"4:true!">> ->
     {true, Remain};
 decode(<<False:8/binary, Remain/binary>>) when False =:= <<"5:false!">> ->
-    {false, Remain}.
+    {false, Remain};
+decode(TNetString) ->
+    {Size, Remain} = unpact_size(TNetString),
+    {Payload, Remain2} = unpact_payload(Remain, Size),
+    {Tag, Remain3} = unpact_tag(Remain2),
+    {decode(Tag, Payload), Remain3}.
+
+decode(<<"#">>, Payload) ->
+    list_to_integer(binary_to_list(Payload)).
+
+unpact_size(TNetString) ->
+    unpact_size(TNetString, []).
+unpact_size(<<Colon:1/binary, Remain/binary >>, Acc) when Colon =:= <<":">> ->
+    BinSize = << <<Bin/binary>> || Bin <- lists:reverse(Acc) >>,
+    Size = list_to_integer(binary_to_list(BinSize)),
+    {Size, Remain};
+unpact_size(<< Byte:1/binary, Remain/binary >>, Acc) ->
+    unpact_size(Remain, [Byte|Acc]).
+
+unpact_payload(Remain, Size) ->
+    <<Payload:Size/binary, Remain2/binary>> = Remain,
+    {Payload, Remain2}.
+
+unpact_tag(Remain) ->
+    <<Tag:1/binary, Remain2/binary>> = Remain,
+    {Tag, Remain2}.
 

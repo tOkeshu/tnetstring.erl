@@ -51,3 +51,8 @@ decode_false_test() ->
     ?assertEqual(false, Term),
     ?assertEqual(<<>>, Remain).
 
+decode_int_test() ->
+    {Term, Remain} = tnetstring:decode(<<"11:12345678901#">>),
+    ?assertEqual(12345678901, Term),
+    ?assertEqual(<<>>, Remain).
+
