@@ -3,5 +3,7 @@
 -export([encode/1]).
 
 encode(null) ->
-    <<"0:~">>.
+    <<"0:~">>;
+encode(true) ->
+    <<"4:true!">>.
 
